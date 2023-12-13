@@ -5,10 +5,10 @@ import pgPromise from "pg-promise";
 import mlajasBarbershop from "../services/mlajas-barbershop.js";
 
 // TODO configure this to work.
-const DATABASE_URL = process.env.DATABASE_URL_TEST || "postgres://xpjmzeis:0X_fgEfUzNTepNI-DtLv8w1fgSCwppSm@cornelius.db.elephantsql.com/xpjmzeis";
+const DATABASE_URL_TEST = process.env.DATABASE_URL_TEST || "postgres://xpjmzeis:0X_fgEfUzNTepNI-DtLv8w1fgSCwppSm@cornelius.db.elephantsql.com/xpjmzeis";
 
 const config = {
-    connectionString: DATABASE_URL,
+    connectionString: DATABASE_URL_TEST,
 };
 
 const pgp = pgPromise();
@@ -48,7 +48,7 @@ describe("Barbershop Booking System", function () {
         myobi: 2
     };
 
-    this.beforeEach(async () => {
+    beforeEach(async () => {
         await db.none(`truncate table bookings restart identity cascade`);
     });
 
@@ -251,4 +251,6 @@ describe("Barbershop Booking System", function () {
 
         assert.equal(0, bookingsMade.length);
     });
+    
+    after(db.$pool.end);
 });
